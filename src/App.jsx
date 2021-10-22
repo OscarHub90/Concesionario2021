@@ -9,16 +9,16 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route to="/login">
+        <Route path="/login">
           <Login/>
         </Route>
-        <Route to="/registro">
+        <Route path="/registro">
           <Registro/>
         </Route>
-        <Route to="/admin">
+        <Route path="/admin">
           <Admin/>
         </Route>
-        <Route to="/">
+        <Route path="/">
           <Index />
         </Route>
       </Switch>
