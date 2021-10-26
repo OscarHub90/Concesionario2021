@@ -4,6 +4,7 @@ import Login from "pages/Login";
 import Registro from "pages/Registro";
 import {BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
 import "styles/styles.css";
+import PublicLayout from "layouts/PublicLayout";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
           <Admin/>
         </Route>
         <Route path="/">
+        <PublicLayout>
           <Index />
+        </PublicLayout>
         </Route>
       </Switch>
     </Router>
