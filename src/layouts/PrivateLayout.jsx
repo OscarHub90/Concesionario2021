@@ -1,8 +1,13 @@
+import Sidebar from 'components/Sidebar'
 import React from 'react'
+import { Children } from 'react'
 
-const PrivateLayout = () => {
+const PrivateLayout = ({Children}) => {
     return (
-        <div>PrivateLayout</div>
+        <div>
+            <Sidebar />
+            {Children}
+        </div>
     )
 }
 
