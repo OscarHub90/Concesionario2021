@@ -5,7 +5,7 @@ const AuthLayout = ({children}) => {
         <div>
             Layout Autenticación
             {children}
-            </div>
+        </div>
     )
 }
 
