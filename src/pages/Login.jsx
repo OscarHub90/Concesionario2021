@@ -25,16 +25,16 @@ const Login = () => {
                 </div>
                 <div max-w-md w-full>
                     <Link to = "/admin">
-                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border font-medium rounded-md text-lg text-gray-700 bg-gray-200 hover:bg-blue-300 focus:outline-none focus:ring-gray-500"
                     type="submit">
                         Iniciar sesión
                     </button>
                     </Link>
                 </div>
                 <div className='flex items-center justify-center'>
-                  <span className='mx-2'>----------------------</span>
+                  <span className='mx-2'>-------------------------</span>
                   <h2 className='my- text-center text-sm font-bold text-gray-600'>O</h2>
-                  <span className='mx-2'>----------------------</span>
+                  <span className='mx-2'>-------------------------</span>
                 </div>
                 <div>
                     <button type="submit"className="group relative w-full flex justify-center py-2 px-4 m m-4 border text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -42,7 +42,7 @@ const Login = () => {
                         <img src={Google} alt="Google" className="h-7 w-7" />
                     <span className="mx-4">Inicia sesión con Google</span>
                     </div>
-                    
+               
                     </button>
                 </div>
             </form>
