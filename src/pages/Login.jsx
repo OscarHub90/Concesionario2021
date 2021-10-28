@@ -10,7 +10,7 @@ const Login = () => {
             <form className="mt-10 max-w-lg">
                 <div>
                  <input className="appearance-none relative block w-full focus:outline-none mx0-2 px-3 py-3 m-2 border border-gray-600 rounded-lg" 
-                 type="email" placeholder="correo123@gmail.com" required/>
+                 type="email" placeholder="micorreo@gmail.com" required/>
                  <input className="appearance-none relative block w-full focus:outline-none mx-2 px-3 py-3 border border-gray-600 rounded-lg" 
                  type="password" placeholder="Contraseña" required />
                 </div>
@@ -25,7 +25,7 @@ const Login = () => {
                 </div>
                 <div max-w-md w-full>
                     <Link to = "/admin">
-                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border font-medium rounded-md text-lg text-gray-700 bg-gray-200 hover:bg-blue-300 focus:outline-none focus:ring-gray-500"
+                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border font-medium rounded-md text-lg text-gray-700 bg-gray-200 hover:bg-blue-400 focus:outline-none focus:ring-gray-500"
                     type="submit">
                         Iniciar sesión
                     </button>
