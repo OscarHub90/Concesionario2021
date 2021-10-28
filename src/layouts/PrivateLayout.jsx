@@ -5,7 +5,7 @@ const PrivateLayout = ({children}) => {
     return (
         <div className="flex w-screen h-screen">
             <Sidebar />
-            <main className="flex w-full overflow-y-scroll">{children}</main>
+            <main className="flex w-full overflow-y-scroll justify-center items-center">{children}</main>
             
         </div>
     )
