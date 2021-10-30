@@ -12,7 +12,7 @@ const Vehiculos = () => {
     }
     },[mostrarTabla]); 
     return (
-        <div>
+        <div className=" items-center h-full m-20 p-20 justify-center flex flex-col">
             <h2>ADMINISTRACIÓN DE PRODUCTOS</h2>
             <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
@@ -25,7 +25,29 @@ const Vehiculos = () => {
 }
 
 const TablaProdructos = () => {
-    return <div>acá va la tabla de productos</div>
+    return (
+    <div>
+    <h2 className="text-gray-900 font-bold text-2xl">Tabla de Productos</h2>
+        <table >
+            <thead>
+                <tr>
+                    <th>ID del producto</th>
+                    <th>Nombre del producto</th>
+                    <th>Valor Unitario</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>001</td>
+                    <td>Marco Fotografía XL</td>
+                    <td>10.000</td>
+                    <td>Activo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    )
 };
 
 const FormularioCreaciónProductos = () => {
