@@ -56,9 +56,13 @@ const Productos = () => {
             {mostrarTabla ? (
                 <TablaProdructos listaProductos={productos} />
             ) : (
-                <FormularioCreaciónProductos />
+                <FormularioCreaciónProductos 
+                mostarTablaAlGuardar ={setmostrarTabla}
+                listaProductos={productos}
+                registrarNuevo = {setproductos}
+                />
             )}
-            <ToastContainer position="top-center" autoClose={5000}/>
+            <ToastContainer position="bottom-center" autoClose={5000}/>
         </div>
     );
 };
@@ -98,7 +102,7 @@ const TablaProdructos = ( { listaProductos } ) => {
     )
 };
 
-const FormularioCreaciónProductos = () => {
+const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , registrarNuevo}) => {
 
     //Se crean las variables para almacenar la información de los productos
     const [idProducto, setidProducto] = useState();
@@ -107,10 +111,14 @@ const FormularioCreaciónProductos = () => {
     const [estado, setestado] = useState();
     // Se crea la función para enviar al backend que se llamará deasde el botón "Guardar" incluyendo el botón o poo up
     // de notificación con la librería toastify.
+    // Se incluye la función mostrarTablaAlGuardar para que al guardar se pase a la tabla de todos los productos
+    // registrarNuevo([...listaProductos]); es un append, es decir sirve para agragar datos a la lista de productos.
     
     const enviarAlBackend = () => {
         console.log("idProducto", idProducto, "nombre", nombre, "valor", valor, "estado", estado)  
-        toast.success("¡Producto almacenado con Éxito!");     
+        toast.success("¡Producto almacenado con Éxito!");
+        mostarTablaAlGuardar(true);
+        registrarNuevo([...listaProductos,{idProducto:idProducto, nombre:nombre, valor:valor, estado:estado}]);
     };
 
     return (<div className="flex flex-col justify-center">

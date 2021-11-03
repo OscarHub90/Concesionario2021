@@ -3,7 +3,7 @@ import PrivateLayout from "layouts/PrivateLayout";
 import PublicLayout from "layouts/PublicLayout";
 import Admin from "pages/admin/Index";
 import Clientes from "pages/admin/Clientes";
-import Vehiculos from "pages/admin/Productos";
+import Productos from "pages/admin/Productos";
 import Index from "pages/Index"
 import Login from "pages/Login";
 import Registro from "pages/Registro";
@@ -18,7 +18,7 @@ function App() {
         <PrivateLayout>
           <Switch>
             <Route path='/admin/productos'>
-              <Vehiculos />
+              <Productos />
             </Route>
             <Route path='/admin/clientes'>
               <Clientes />
