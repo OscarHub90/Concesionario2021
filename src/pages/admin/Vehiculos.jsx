@@ -1,8 +1,36 @@
 import React, {useEffect, useState} from 'react'
 
+const productos = [
+
+    {
+    Codigo: "001",
+    nombre: "Mesa de centro",
+    valor: "$5.000",
+    estado: "En inventario",
+    },
+    {
+    id: "002",
+    nombre: "Mesa de esquina",
+    valor: "$10.000",
+    estado: "En inventario",
+    },
+    {
+    id: "003",
+    nombre: "Mesa redonda",
+    valor: "$10.000",
+    estado: "En inventario",
+    },
+];
+
 const Vehiculos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Producto");
+    const [productos, setproductos] = useState ([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
+
+    useEffect (() => {
+        // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
+        setproductos(productos);
+    }, []);
 
     useEffect (() => {
      if (mostrarTabla) {
@@ -12,28 +40,35 @@ const Vehiculos = () => {
     }
     },[mostrarTabla]); 
     return (
-        <div className=" items-center h-full m-20 p-20 justify-center flex flex-col">
-            <h2>ADMINISTRACIÓN DE PRODUCTOS</h2>
+        <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
+            <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
             <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
-            {mostrarTabla ? 
-            <TablaProdructos />
-            :<FormularioCreaciónProductos />}
+            {mostrarTabla ? (
+                <TablaProdructos listaProductos={productos} />
+            ) : (
+                <FormularioCreaciónProductos />
+            )}
         </div>
     );
-}
+};
 
-const TablaProdructos = () => {
+
+const TablaProdructos = ( { listaProductos } ) => {
+    useEffect(() => {
+        console.log("Este es el listado de productos", listaProductos);
+    }, [listaProductos]);
+    
     return (
     <div>
     <h2 className="text-gray-900 font-bold text-2xl">Tabla de Productos</h2>
         <table >
             <thead>
                 <tr>
-                    <th>ID del producto</th>
-                    <th>Nombre del producto</th>
-                    <th>Valor Unitario</th>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Valor</th>
                     <th>Estado</th>
                 </tr>
             </thead>
