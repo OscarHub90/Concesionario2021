@@ -1,35 +1,41 @@
 import React, {useEffect, useState} from 'react'
 
-const productos = [
+const productosBackend = [
 
-    {
-    Codigo: "001",
+{
+    codigo: "001",
     nombre: "Mesa de centro",
     valor: "$5.000",
     estado: "En inventario",
-    },
-    {
-    id: "002",
+},
+{
+    codigo: "002",
     nombre: "Mesa de esquina",
     valor: "$10.000",
     estado: "En inventario",
-    },
-    {
-    id: "003",
+},
+{
+    codigo: "003",
     nombre: "Mesa redonda",
     valor: "$10.000",
     estado: "En inventario",
-    },
+},
+{
+    codigo: "005",
+    nombre: "Mesa redonda",
+    valor: "$10.000",
+    estado: "En inventario",
+},
 ];
 
-const Vehiculos = () => {
+const Productos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Producto");
-    const [productos, setproductos] = useState ([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
+    const [productos, setproductos] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
-        setproductos(productos);
+        setproductos(productosBackend);
     }, []);
 
     useEffect (() => {
@@ -59,7 +65,7 @@ const TablaProdructos = ( { listaProductos } ) => {
     useEffect(() => {
         console.log("Este es el listado de productos", listaProductos);
     }, [listaProductos]);
-    
+
     return (
     <div>
     <h2 className="text-gray-900 font-bold text-2xl">Tabla de Productos</h2>
@@ -73,12 +79,16 @@ const TablaProdructos = ( { listaProductos } ) => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Marco Fotografía XL</td>
-                    <td>10.000</td>
-                    <td>Activo</td>
-                </tr>
+            {listaProductos.map((producto)=>{
+                    return (
+                        <tr>
+                            <td>{producto.codigo}</td>
+                            <td>{producto.nombre}</td>
+                            <td>{producto.valor}</td>
+                            <td>{producto.estado}</td>
+                        </tr>
+                    );
+                })}
             </tbody>
         </table>
     </div>
@@ -99,4 +109,4 @@ const FormularioCreaciónProductos = () => {
     )
 };
 
-export default Vehiculos
+export default Productos
