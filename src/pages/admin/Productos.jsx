@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const productosBackend = [
 
@@ -56,6 +58,7 @@ const Productos = () => {
             ) : (
                 <FormularioCreaciónProductos />
             )}
+            <ToastContainer position="top-center" autoClose={5000}/>
         </div>
     );
 };
@@ -102,6 +105,13 @@ const FormularioCreaciónProductos = () => {
     const [nombre, setnombre] = useState();
     const [valor, setvalor] = useState();
     const [estado, setestado] = useState();
+    // Se crea la función para enviar al backend que se llamará deasde el botón "Guardar" incluyendo el botón o poo up
+    // de notificación con la librería toastify.
+    
+    const enviarAlBackend = () => {
+        console.log("idProducto", idProducto, "nombre", nombre, "valor", valor, "estado", estado)  
+        toast.success("¡Producto almacenado con Éxito!");     
+    };
 
     return (<div className="flex flex-col justify-center">
             <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación productos nuevos</h2>
@@ -151,7 +161,9 @@ const FormularioCreaciónProductos = () => {
                     </select>
                 </label>
 
-                <button type='submit'className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white">Guardar Producto</button>
+                <button type='button' className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white " 
+                onClick ={()=>{enviarAlBackend()}}>
+                    Guardar Producto</button>
             </form>
           </div>
     )
