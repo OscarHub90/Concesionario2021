@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -105,34 +105,29 @@ const TablaProdructos = ( { listaProductos } ) => {
 const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , registrarNuevo}) => {
 
     //Se crean las variables para almacenar la información de los productos
-    const [idProducto, setidProducto] = useState();
-    const [nombre, setnombre] = useState();
-    const [valor, setvalor] = useState();
-    const [estado, setestado] = useState();
-    // Se crea la función para enviar al backend que se llamará deasde el botón "Guardar" incluyendo el botón o poo up
-    // de notificación con la librería toastify.
-    // Se incluye la función mostrarTablaAlGuardar para que al guardar se pase a la tabla de todos los productos
-    // registrarNuevo([...listaProductos]); es un append, es decir sirve para agragar datos a la lista de productos.
-    
-    const enviarAlBackend = () => {
-        console.log("idProducto", idProducto, "nombre", nombre, "valor", valor, "estado", estado)  
-        toast.success("¡Producto almacenado con Éxito!");
-        mostarTablaAlGuardar(true);
-        registrarNuevo([...listaProductos,{idProducto:idProducto, nombre:nombre, valor:valor, estado:estado}]);
+    const form = useRef(null);
+
+    const submitForm =(e) => {
+        e.preventDefault();
+        const fd = new FormData(form.current);
+        
+        const nuevoProducto = {};
+        fd.forEach((value, key)=> {
+            console.log(value, key)
+            nuevoProducto[key] = value;
+        });
+    console.log("datos enviados", nuevoProducto);
     };
 
+    toast.success("Producto agregado con éxito!")
     return (<div className="flex flex-col justify-center">
             <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación productos nuevos</h2>
-            <form className= " flex flex-auto grid-cols-1">
-                <label htmlFor="código"> ID De producto
+            <form ref={form} onSubmit={submitForm} className= " flex flex-auto grid-cols-1">
+                <label htmlFor="id"> ID De producto
                     <input 
-                    name="código"
+                    name="id"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
                     
-                    value={idProducto}
-                    onChange={(e) => {
-                        setidProducto(e.target.value);
-                    }}             
                     />
                 </label>
                 <label htmlFor="nombre"> Descripción
@@ -140,28 +135,18 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                     name="nombre"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text"
 
-                    value={nombre}
-                    onChange={(e) => {
-                        setnombre(e.target.value);
-                    }}
                     />
                 </label>
                 <label htmlFor="valor"> Valor Unitario
                     <input 
                     name="valor"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="$"
-                    value={valor}
-                    onChange={(e) => {
-                        setvalor(e.target.value);
-                    }}
+
+                    required
                     />
                 </label>
                 <label htmlFor="estado"> Estado
-                    <select 
-                    value={estado}
-                    onChange={(e) => {
-                        setestado(e.target.value);
-                    }}
+                    <select required
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text">
                     <option disabled>Seleccione una opción</option>
                         <option >Activo</option>
@@ -169,8 +154,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                     </select>
                 </label>
 
-                <button type='button' className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white " 
-                onClick ={()=>{enviarAlBackend()}}>
+                <button type='submit' className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white " >
                     Guardar Producto</button>
             </form>
           </div>
