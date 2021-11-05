@@ -9,9 +9,12 @@ import Login from "pages/Login";
 import Registro from "pages/Registro";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "styles/styles.css";
+import {DarkModeContext} from "context/darkMode"
 
 function App() {
   return (
+    <div className="App">
+    <DarkModeContext.Provider >
     <Router>
     <Switch>
       <Route path={['/admin', '/admin/productos', '/admin/clientes']}>
@@ -52,6 +55,9 @@ function App() {
       </Route>
     </Switch>
   </Router>
+
+    </DarkModeContext.Provider>
+    </div>
   );
 }
 

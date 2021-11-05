@@ -79,7 +79,7 @@ const TablaProdructos = ( { listaProductos } ) => {
         <table >
             <thead>
                 <tr>
-                    <th>ID De producto</th>
+                    <th>ID Producto</th>
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
@@ -89,7 +89,7 @@ const TablaProdructos = ( { listaProductos } ) => {
             {listaProductos.map((producto)=>{
                     return (
                         <tr>
-                            <td>{producto.codigo}</td>
+                            <td>{producto.id}</td>
                             <td>{producto.nombre}</td>
                             <td>{producto.valor}</td>
                             <td>{producto.estado}</td>
@@ -116,10 +116,12 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
             console.log(value, key)
             nuevoProducto[key] = value;
         });
-    console.log("datos enviados", nuevoProducto);
+        mostarTablaAlGuardar(true);
+        toast.success("Producto agregado con éxito!")
+        registrarNuevo([...listaProductos, nuevoProducto]);
     };
 
-    toast.success("Producto agregado con éxito!")
+    
     return (<div className="flex flex-col justify-center">
             <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación productos nuevos</h2>
             <form ref={form} onSubmit={submitForm} className= " flex flex-auto grid-cols-1">
@@ -127,7 +129,6 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                     <input 
                     name="id"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
-                    
                     />
                 </label>
                 <label htmlFor="nombre"> Descripción
@@ -145,10 +146,12 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                     required
                     />
                 </label>
-                <label htmlFor="estado"> Estado
-                    <select required
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text">
-                    <option disabled>Seleccione una opción</option>
+                <label htmlFor='estado'>
+                    Estado
+                    <select
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="estado" required
+                    defaultValue={0}>
+                    <option disabled value={0}>Seleccione una opción</option>
                         <option >Activo</option>
                         <option >Inactivo</option>
                     </select>
