@@ -1,8 +1,9 @@
 import React from 'react'
+import Logo from 'media/logo.png';
 
 const ImagenLogo = () => {
-    return
-       
+    return 
+       <img src="{Logo}" alt="Workflow" />
 };
 
-export default ImagenLogo
+export default ImagenLogo;
