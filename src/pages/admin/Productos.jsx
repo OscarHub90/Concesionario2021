@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import React, {useEffect, useState, useRef} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,7 +50,9 @@ const Productos = () => {
     },[mostrarTabla]); 
     return (
         <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
-            <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
+            <h2 className=" text-3xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
+            <div className="w-full">
+
             <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
@@ -63,6 +66,7 @@ const Productos = () => {
                 />
             )}
             <ToastContainer position="bottom-center" autoClose={5000}/>
+            </div>
         </div>
     );
 };
@@ -75,24 +79,31 @@ const TablaProdructos = ( { listaProductos } ) => {
 
     return (
     <div>
-    <h2 className="text-gray-900 font-bold text-2xl">Tabla de Productos</h2>
-        <table >
+    <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
+        <table className="table w-full">
             <thead>
                 <tr>
                     <th>ID Producto</th>
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
             {listaProductos.map((producto)=>{
                     return (
-                        <tr>
+                        <tr key={nanoid()}>
                             <td>{producto.id}</td>
                             <td>{producto.nombre}</td>
                             <td>{producto.valor}</td>
                             <td>{producto.estado}</td>
+                            <td>
+                                <div className="flex justify-evenly">
+                                <i className="fas fa-edit hover:text-yellow-600" />
+                                <i className="far fa-trash-alt hover:text-red-700" />
+                                </div>
+                            </td>
                         </tr>
                     );
                 })}

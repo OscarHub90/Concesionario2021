@@ -1,9 +1,11 @@
 import React from 'react'
-import Logo from 'media/logo.png';
+import Logo from 'media/LogoClav'
 
 const ImagenLogo = () => {
     return 
-       <img src="{Logo}" alt="Workflow" />
+
+    <img src={Logo} alt="Logo" className="h-full w-full" />
+
 };
 
-export default ImagenLogo;
+export default ImagenLogo

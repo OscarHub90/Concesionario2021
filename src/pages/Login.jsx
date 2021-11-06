@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Google from 'media/Google2.png'
-
 const Login = () => {
     return (
         <div className="flex flex-col w-full justify-center items-center">
