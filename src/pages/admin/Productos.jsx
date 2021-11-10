@@ -4,33 +4,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-const productosBackend = [
-
-{
-    codigo: "001",
-    nombre: "Mesa de centro",
-    valor: "$5.000",
-    estado: "En inventario",
-},
-{
-    codigo: "002",
-    nombre: "Mesa de esquina",
-    valor: "$10.000",
-    estado: "En inventario",
-},
-{
-    codigo: "003",
-    nombre: "Mesa redonda",
-    valor: "$10.000",
-    estado: "En inventario",
-},
-{
-    codigo: "005",
-    nombre: "Mesa redonda",
-    valor: "$10.000",
-    estado: "En inventario",
-},
-];
 
 const Productos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
@@ -39,8 +12,21 @@ const Productos = () => {
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
-        setproductos(productosBackend);
-    }, []);
+        const obtenerProductos = async () => {
+            const options = { method: 'GET', url: 'https://vast-waters-45728.herokuapp.com/vehicle/' };
+            await axios
+              .request(options)
+              .then(function (response) {
+                setproductos(response.data);
+              })
+              .catch(function (error) {
+                console.error(error);
+              });
+            };
+        if (mostrarTabla){
+            obtenerProductos();
+        }
+    }, [mostrarTabla]);
 
     useEffect (() => {
      if (mostrarTabla) {
@@ -120,8 +106,8 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
 
     //Se crean las variables para almacenar la información de los productos
     const form = useRef(null);
-
-    const submitForm =(e) => {
+// Se agrega async para dar espera y que las respuestas sean asincronas
+    const submitForm = async(e) => {
         e.preventDefault();
         const fd = new FormData(form.current);
         
@@ -130,8 +116,26 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
             console.log(value, key)
             nuevoProducto[key] = value;
         });
+        // Se agrega el código generado desde POSTMAN, por ahora se incluye el dado por el profesor.
+
+        const options = {
+            method: 'POST',
+            url: 'https://vast-waters-45728.herokuapp.com/vehicle/create',
+            headers: { 'Content-Type': 'application/json' },
+            data: { name: nuevoProducto.name, brand: nuevoProducto.brand, model: nuevoProducto.model },
+          };
+      
+          await axios
+            .request(options)
+            .then(function (response) {
+              console.log(response.data);
+              toast.success('Producto agregado con éxito!');
+            })
+            .catch(function (error) {
+              console.error(error);
+              toast.error('Error creando el producto');
+            });
         mostarTablaAlGuardar(true);
-        toast.success("Producto agregado con éxito!")
     };
 
     
