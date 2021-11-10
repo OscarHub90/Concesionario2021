@@ -62,12 +62,22 @@ const Productos = () => {
 
 
 const TablaProdructos = ( { listaProductos } ) => {
+    const [Busqueda, setBusqueda] = useState ('');
+
+    useEffect(() => {
+        console.log("Búsqueda", Busqueda)
+    }, [Busqueda]);
+
     useEffect(() => {
         console.log("Este es el listado de productos", listaProductos);
     }, [listaProductos]);
 
     return (
     <div>
+        <input 
+        value={Busqueda}
+        placeholder="Buscar" className="border border-gray-700 rounded-lg m-4 py-1"/>
+        
     <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
         <table className="table w-full">
             <thead>
@@ -82,7 +92,18 @@ const TablaProdructos = ( { listaProductos } ) => {
             <tbody>
             {listaProductos.map((producto)=>{
                     return (
-                        <tr key={nanoid()}>
+                        <filaProducto key={nanoid()} producto={producto}/>
+                    );
+                })}
+            </tbody>
+        </table>
+    </div>
+    )
+};
+
+const filaProducto = ({producto}) => {
+return (
+                        <tr>
                             <td>{producto.id}</td>
                             <td>{producto.nombre}</td>
                             <td>{producto.valor}</td>
@@ -94,14 +115,10 @@ const TablaProdructos = ( { listaProductos } ) => {
                                 </div>
                             </td>
                         </tr>
-                    );
-                })}
-            </tbody>
-        </table>
-    </div>
-    )
-};
 
+)
+
+}
 const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , registrarNuevo}) => {
 
     //Se crean las variables para almacenar la información de los productos
