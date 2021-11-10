@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import React, {useEffect, useState, useRef} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const productosBackend = [
 
@@ -48,6 +49,8 @@ const Productos = () => {
         setnombreBoton("Mostrar Todos los productos");
     }
     },[mostrarTabla]); 
+
+    
     return (
         <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
             <h2 className=" text-3xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
@@ -129,7 +132,6 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
         });
         mostarTablaAlGuardar(true);
         toast.success("Producto agregado con éxito!")
-        registrarNuevo([...listaProductos, nuevoProducto]);
     };
 
     

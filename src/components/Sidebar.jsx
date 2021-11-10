@@ -6,7 +6,9 @@ const Sidebar = () => {
     return (
         <nav className='w-72 border border-gray-300 h-full flex flex-col p-4 sidebar'>
         <div className="justify-start">
-            <img src={Logo} alt="Google" className="h-full w-full" />
+            <Link to="/admin ">
+              <img src={Logo} alt="Google" className="h-full w-full" />
+            </Link>
         </div>
       <div className='my-4'>
         <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' />
