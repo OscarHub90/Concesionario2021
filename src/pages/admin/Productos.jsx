@@ -13,7 +13,7 @@ const Productos = () => {
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
         const obtenerProductos = async () => {
-            const options = { method: 'GET', url: 'https://vast-waters-45728.herokuapp.com/vehicle/' };
+            const options = { method: 'GET', url: 'http://localhost:4000/productos' };
             await axios
               .request(options)
               .then(function (response) {
@@ -137,7 +137,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
 
         const options = {
             method: 'POST',
-            url: 'https://vast-waters-45728.herokuapp.com/vehicle/create',
+            url: 'http://localhost:4000/productos/nuevo',
             headers: { 'Content-Type': 'application/json' },
             data: { name: nuevoProducto.name, brand: nuevoProducto.brand, model: nuevoProducto.model },
           };
