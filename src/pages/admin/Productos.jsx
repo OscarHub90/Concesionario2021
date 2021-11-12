@@ -12,9 +12,10 @@ const Productos = () => {
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
-        const obtenerProductos = async () => {
-            const options = { method: 'GET', url: 'http://localhost:4000/productos' };
-            await axios
+        if (mostrarTabla) {
+
+            const options = { method: 'GET', url: 'http://localhost:5000/productos'};
+             axios
               .request(options)
               .then(function (response) {
                 setproductos(response.data);
@@ -22,9 +23,6 @@ const Productos = () => {
               .catch(function (error) {
                 console.error(error);
               });
-            };
-        if (mostrarTabla){
-            obtenerProductos();
         }
     }, [mostrarTabla]);
 
@@ -124,7 +122,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
     //Se crean las variables para almacenar la información de los productos
     const form = useRef(null);
 // Se agrega async para dar espera y que las respuestas sean asincronas
-    const submitForm = async(e) => {
+    const submitForm = async (e) => {
         e.preventDefault();
         const fd = new FormData(form.current);
         
@@ -133,14 +131,13 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
             console.log(value, key)
             nuevoProducto[key] = value;
         });
-        // Se agrega el código generado desde POSTMAN, por ahora se incluye el dado por el profesor.
-
+        
         const options = {
             method: 'POST',
-            url: 'http://localhost:4000/productos/nuevo',
+            url: 'http://localhost:5000/productos/nuevo',
             headers: { 'Content-Type': 'application/json' },
-            data: { name: nuevoProducto.name, brand: nuevoProducto.brand, model: nuevoProducto.model },
-          };
+            data: {id: nuevoProducto.id, nombre: nuevoProducto.nombre, valor: nuevoProducto.valor, estado: nuevoProducto.estado}
+        };
       
           await axios
             .request(options)
