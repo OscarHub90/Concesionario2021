@@ -12,9 +12,8 @@ const Productos = () => {
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
-        if (mostrarTabla) {
-
-            const options = { method: 'GET', url: 'http://localhost:5000/productos'};
+        const obtenerProductos = async () => {
+            const options = {method: 'GET', url: 'http://localhost:5000/productos'};
              axios
               .request(options)
               .then(function (response) {
@@ -23,6 +22,9 @@ const Productos = () => {
               .catch(function (error) {
                 console.error(error);
               });
+        };
+        if (mostrarTabla) {
+            obtenerProductos();
         }
     }, [mostrarTabla]);
 
@@ -84,39 +86,38 @@ const TablaProdructos = ( { listaProductos } ) => {
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
+                    <th>Editar</th>
+                    <th >Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-            {listaProductos.map((producto)=>{
-                    return (
-                        <filaProducto key={nanoid()} producto={producto}/>
-                    );
-                })}
-            </tbody>
-        </table>
-    </div>
-    )
-};
-
-const filaProducto = ({producto}) => {
-return (
-                        <tr>
+             {listaProductos.map((producto)=>{
+                return(  
+                        <tr key={nanoid()}>
                             <td>{producto.id}</td>
                             <td>{producto.nombre}</td>
                             <td>{producto.valor}</td>
                             <td>{producto.estado}</td>
+                            <td className="justify-items-center">
+                                <div className="justify-items-center">
+                                    <i className="far fa-edit text-blue-600 hover:text-yellow-500"/>
+                                </div>
+                            </td>
                             <td>
-                                <div className="flex justify-evenly">
-                                <i className="fas fa-edit hover:text-yellow-600" />
-                                <i className="far fa-trash-alt hover:text-red-700" />
+                                <div>
+                                    <i class="far fa-trash-alt text-blue-900 hover:text-red-500"/>
                                 </div>
                             </td>
                         </tr>
+                );
+                })}
+            </tbody>
+        </table>
+    </div>
+    );
+};
 
-)
 
-}
 const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , registrarNuevo}) => {
 
     //Se crean las variables para almacenar la información de los productos
