@@ -74,9 +74,9 @@ const TablaProdructos = ( { listaProductos } ) => {
 
     return (
     <div>
-        <input 
+        <input className="flex w-full"
         value={Busqueda}
-        placeholder="Buscar" className="border border-gray-700 rounded-lg m-4 py-1"/>
+        placeholder="Buscar" className="border border-gray-700 rounded-xl py-2"/>
         
     <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
         <table className="table w-full">
@@ -190,7 +190,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                 </label>
 
                 <button type='submit' className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white " >
-                    Guardar Producto</button>
+                    Guardar</button>
             </form>
           </div>
     )

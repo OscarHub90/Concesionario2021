@@ -1,12 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Google from 'media/Google2.png'
+import Logo from 'media/LogoClav.png'
+
 const Login = () => {
     return (
         <div className="flex flex-col w-full justify-center items-center">
-            
-            <h2 className="m-4 text-center text-2xl text-blue-600 font font-bold">Inicia sesión en tu cuenta</h2>
-            <form className="mt-10 max-w-lg">
+         <div className="justify-start h-50 w-50">
+            <Link to="/admin ">
+              <img src={Logo} alt="Logo"/>
+            </Link>
+        </div>
+            <h2 className=" text-center text-2xl text-gray-600 font font-bold">Inicia sesión en tu cuenta</h2>
+            <form className="mt-4 max-w-lg">
                 <div>
                  <input className="appearance-none relative block w-full focus:outline-none mx0-2 px-3 py-3 m-2 border border-gray-600 rounded-lg" 
                  type="email" placeholder="micorreo@gmail.com" required/>
@@ -24,7 +30,7 @@ const Login = () => {
                 </div>
                 <div max-w-md w-full>
                     <Link to = "/admin">
-                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border font-medium rounded-md text-lg text-gray-700 bg-gray-200 hover:bg-blue-400 focus:outline-none focus:ring-gray-500"
+                    <button className="group relative w-full flex justify-center py-2 px-4 m m-4 border font-medium rounded-md text-lg text-white bg-blue-800 hover:bg-blue-400 focus:outline-none focus:ring-gray-500"
                     type="submit">
                         Iniciar sesión
                     </button>
