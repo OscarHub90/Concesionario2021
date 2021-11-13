@@ -108,7 +108,7 @@ const FilaProducto = ({producto}) => {
     const [editar, setEditar] = useState(false);
     const [infoNuevo, setInfonuevo] = useState({
 
-        id:producto.id,
+        codigo:producto.codigo,
         nombre:producto.nombre,
         valor:producto.valor,
         estado:producto.estado,
@@ -158,7 +158,7 @@ const FilaProducto = ({producto}) => {
                         className="border-gray-700 bg-blue-100 p-2 rounded-xl"
                         type="text" 
                         Value={infoNuevo.id}
-                        onChange={e=>setInfonuevo({...infoNuevo, id: e.target.value})}
+                        onChange={e=>setInfonuevo({...infoNuevo, codigo: e.target.value})}
                         />
                         </td>
                         <td><input 
@@ -183,7 +183,7 @@ const FilaProducto = ({producto}) => {
                          </>
                          ):(
                          <>
-                         <td>{producto.id}</td>
+                         <td>{producto.codigo}</td>
                          <td>{producto.nombre}</td>
                          <td>{producto.valor}</td>
                          <td>{producto.estado}</td>
@@ -230,7 +230,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
             method: 'POST',
             url: 'http://localhost:5000/productos/nuevo',
             headers: { 'Content-Type': 'application/json' },
-            data: {id: nuevoProducto.id, nombre: nuevoProducto.nombre, valor: nuevoProducto.valor, estado: nuevoProducto.estado}
+            data: {codigo: nuevoProducto.codigo, nombre: nuevoProducto.nombre, valor: nuevoProducto.valor, estado: nuevoProducto.estado}
         };
       
           await axios
@@ -250,9 +250,9 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
     return (<div className="flex flex-col justify-center">
             <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación productos nuevos</h2>
             <form ref={form} onSubmit={submitForm} className= " flex flex-auto grid-cols-1">
-                <label htmlFor="id"> ID De producto
+                <label htmlFor="codigo"> ID De producto
                     <input 
-                    name="id"
+                    name="codigo"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
                     />
                 </label>
