@@ -39,7 +39,7 @@ const Productos = () => {
     
     return (
         <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
-            <h2 className=" text-3xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
+            <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
             <div className="w-full">
 
             <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
@@ -79,6 +79,7 @@ const TablaProdructos = ( { listaProductos } ) => {
         placeholder="Buscar" className="border border-gray-700 rounded-xl py-2"/>
         
     <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
+
         <table className="table w-full">
             <thead>
                 <tr>
@@ -92,31 +93,123 @@ const TablaProdructos = ( { listaProductos } ) => {
             </thead>
             <tbody>
              {listaProductos.map((producto)=>{
-                return(  
-                        <tr key={nanoid()}>
-                            <td>{producto.id}</td>
-                            <td>{producto.nombre}</td>
-                            <td>{producto.valor}</td>
-                            <td>{producto.estado}</td>
-                            <td className="justify-items-center">
-                                <div className="justify-items-center">
-                                    <i className="far fa-edit text-blue-600 hover:text-yellow-500"/>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <i class="far fa-trash-alt text-blue-900 hover:text-red-500"/>
-                                </div>
-                            </td>
-                        </tr>
+                return( <FilaProducto key={nanoid()} producto={producto}/>
                 );
                 })}
             </tbody>
-        </table>
+        </table> 
+
     </div>
     );
 };
 
+const FilaProducto = ({producto}) => {
+    console.log('producto: ',producto)
+    const [editar, setEditar] = useState(false);
+    const [infoNuevo, setInfonuevo] = useState({
+
+        id:producto.id,
+        nombre:producto.nombre,
+        valor:producto.valor,
+        estado:producto.estado,
+    })
+    const actualizarProducto = async () => {
+        console.log(infoNuevo);
+        const options = {
+            method: 'PATCH',
+            url: 'http://localhost:5000/productos/editar/',
+            headers: {'Content-Type': 'application/json'},
+            data: {...infoNuevo, id: producto._id},
+          };
+          await axios
+          .request(options)
+          .then(function (response) {
+            console.log(response.data);
+            toast.success('Producto editado con éxito!')
+          }).catch(function (error) {
+            console.error(error);
+            toast.error('No fue posible editar el registro')
+          });
+
+    }
+    
+    const eliminarProducto = async()=> {
+        const options = {
+            method: 'DELETE',
+            url: 'http://localhost:5000/productos/eliminar/',
+            headers: {'Content-Type': 'application/json'},
+            data: { id: producto._id },
+          };
+          await axios
+          .request(options)
+          .then(function (response) {
+            console.log(response.data);
+            toast.success('Producto eliminado con éxito!')
+          }).catch(function (error) {
+            console.error(error);
+            toast.error('No fue posible eliminar el registro')
+          });       
+    }
+    return (
+                    <tr>
+                        {editar? (
+                        <>
+                        <td><input 
+                        className="border-gray-700 bg-blue-100 p-2 rounded-xl"
+                        type="text" 
+                        Value={infoNuevo.id}
+                        onChange={e=>setInfonuevo({...infoNuevo, id: e.target.value})}
+                        />
+                        </td>
+                        <td><input 
+                        className="border-gray-700 bg-blue-100 p-2 rounded-xl"
+                        type="text" 
+                        Value={infoNuevo.nombre}
+                        onChange={e=>setInfonuevo({...infoNuevo, nombre: e.target.value})}
+                        /></td>
+                        <td><input 
+                        className="border-gray-700 bg-blue-100 p-2 rounded-xl"
+                        type="text" 
+                        Value={infoNuevo.valor}
+                        onChange={e=>setInfonuevo({...infoNuevo, valor: e.target.value})}
+                        /></td>
+                        <td><input 
+                        className="border-gray-700 bg-blue-100 p-2 rounded-xl"
+                        type="text" 
+                        Value={infoNuevo.estado}
+                        onChange={e=>setInfonuevo({...infoNuevo, estado: e.target.value})}
+                        /></td>
+
+                         </>
+                         ):(
+                         <>
+                         <td>{producto.id}</td>
+                         <td>{producto.nombre}</td>
+                         <td>{producto.valor}</td>
+                         <td>{producto.estado}</td>
+                         </>
+                         )}
+                       <td className="justify-items-around">
+                        {editar? (
+                       <i onClick={() => actualizarProducto()} 
+                        className="far fa-check-circle w-8 hover:border-green-600 text-green-600"/>
+                    ):(
+                    <div className="justify-items-center">
+                     <i onClick={() => setEditar(!editar)} 
+                     className="far fa-edit text-blue-600 hover:text-yellow-500"/>
+                     </div>
+
+                     )}
+                    </td>
+                    <td>
+                    <div>
+                        <i onClick={()=>eliminarProducto} className="far fa-trash-alt text-blue-900 hover:text-red-500"/>
+                    </div>
+             </td>
+        </tr>
+
+    )
+}
 
 const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , registrarNuevo}) => {
 
