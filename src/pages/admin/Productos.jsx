@@ -9,9 +9,10 @@ const Productos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Producto");
     const [productos, setproductos] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
+    const [refrescar, setRefrescar] = useState(true)
 
-    useEffect (() => {
-        // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
+    useEffect(() => {
+
         const obtenerProductos = async () => {
             const options = {method: 'GET', url: 'http://localhost:5000/productos'};
              axios
@@ -23,8 +24,19 @@ const Productos = () => {
                 console.error(error);
               });
         };
-        if (mostrarTabla) {
+    
+        if (refrescar){
             obtenerProductos();
+            setRefrescar(false);
+        }
+    }, [refrescar])
+
+    useEffect (() => {
+        // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
+
+        if (mostrarTabla) {
+            setRefrescar(true);
+            
         }
     }, [mostrarTabla]);
 
@@ -46,7 +58,7 @@ const Productos = () => {
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
             {mostrarTabla ? (
-                <TablaProdructos listaProductos={productos} />
+                <TablaProdructos listaProductos={productos} setRefrescar={setRefrescar}/>
             ) : (
                 <FormularioCreaciónProductos 
                 mostarTablaAlGuardar ={setmostrarTabla}
@@ -60,8 +72,7 @@ const Productos = () => {
     );
 };
 
-
-const TablaProdructos = ( { listaProductos } ) => {
+const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
     const [Busqueda, setBusqueda] = useState ('');
 
     useEffect(() => {
@@ -83,7 +94,7 @@ const TablaProdructos = ( { listaProductos } ) => {
         <table className="table w-full">
             <thead>
                 <tr>
-                    <th>ID Producto</th>
+                    <th>Referencia</th>
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
@@ -93,7 +104,7 @@ const TablaProdructos = ( { listaProductos } ) => {
             </thead>
             <tbody>
              {listaProductos.map((producto)=>{
-                return( <FilaProducto key={nanoid()} producto={producto}/>
+                return( <FilaProducto key={nanoid()} producto={producto} setRefrescar={setRefrescar}/>
                 );
                 })}
             </tbody>
@@ -103,8 +114,8 @@ const TablaProdructos = ( { listaProductos } ) => {
     );
 };
 
-const FilaProducto = ({producto}) => {
-    console.log('producto: ',producto)
+const FilaProducto = ({producto, setRefrescar}) => {
+
     const [editar, setEditar] = useState(false);
     const [infoNuevo, setInfonuevo] = useState({
 
@@ -126,6 +137,8 @@ const FilaProducto = ({producto}) => {
           .then(function (response) {
             console.log(response.data);
             toast.success('Producto editado con éxito!')
+            setEditar(false);
+            setRefrescar(true)
           }).catch(function (error) {
             console.error(error);
             toast.error('No fue posible editar el registro')
@@ -136,19 +149,19 @@ const FilaProducto = ({producto}) => {
     const eliminarProducto = async()=> {
         const options = {
             method: 'DELETE',
-            url: 'http://localhost:5000/productos/eliminar/',
+            url: 'http://localhost:5000/productos/eliminar',
             headers: {'Content-Type': 'application/json'},
-            data: { id: producto._id },
+            data: {id: producto._id},
           };
-          await axios
-          .request(options)
-          .then(function (response) {
+          
+          await axios.request(options).then(function (response) {
             console.log(response.data);
-            toast.success('Producto eliminado con éxito!')
+            toast.success("Producto Eliminado con éxito!")
+            setRefrescar(true);
           }).catch(function (error) {
             console.error(error);
-            toast.error('No fue posible eliminar el registro')
-          });       
+            toast.error("¡No fue posible eliminar el producto!")
+          });  
     }
     return (
                     <tr>
@@ -203,7 +216,7 @@ const FilaProducto = ({producto}) => {
                     </td>
                     <td>
                     <div>
-                        <i onClick={()=>eliminarProducto} className="far fa-trash-alt text-blue-900 hover:text-red-500"/>
+                        <i onClick={()=>eliminarProducto()} className="far fa-trash-alt text-blue-900 hover:text-red-500"/>
                     </div>
              </td>
         </tr>
@@ -250,7 +263,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
     return (<div className="flex flex-col justify-center">
             <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación productos nuevos</h2>
             <form ref={form} onSubmit={submitForm} className= " flex flex-auto grid-cols-1">
-                <label htmlFor="codigo"> ID De producto
+                <label htmlFor="codigo"> Referencia
                     <input 
                     name="codigo"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
