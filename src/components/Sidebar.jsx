@@ -1,8 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Logo from 'media/LogoClav.png'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Sidebar = () => {
+  const { logout } = useAuth0();
     return (
         <nav className='w-72 border border-gray-300 h-full flex flex-col p-4 sidebar'>
         <div className="justify-start">
@@ -16,7 +18,7 @@ const Sidebar = () => {
         <Ruta icono='fas fa-wallet' ruta='/admin/ventas' nombre='Ventas' />
         <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
       </div>
-      <button>Cerrar Sesión</button>
+      <button onClick={() => logout({ returnTo: "http://localhost:3000/" })}>Cerrar Sesión</button>
 
     </nav>
   );

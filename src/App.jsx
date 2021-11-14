@@ -10,10 +10,16 @@ import Registro from "pages/Registro";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "styles/styles.css";
 import {DarkModeContext} from "context/darkMode"
+import { Auth0Provider } from "@auth0/auth0-react"; 
 
 function App() {
-  return (
-    <div className="App">
+    return (
+      <Auth0Provider
+      domain="misiontic-concesionario2.us.auth0.com"
+      clientId="hhcz7kYvqDx0oIaBJisfB9cZ3lsZi9kd"
+      redirectUri={window.location.origin}
+      >
+        <div className="App">
     <DarkModeContext.Provider >
     <Router>
     <Switch>
@@ -57,7 +63,8 @@ function App() {
   </Router>
 
     </DarkModeContext.Provider>
-    </div>
+        </div>    
+      </Auth0Provider>
   );
 }
 
