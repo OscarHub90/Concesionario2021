@@ -4,15 +4,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-
 const Productos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Producto");
     const [productos, setproductos] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
-    const [refrescar, setRefrescar] = useState(true)
+    const [recargar, setRecargar] = useState(true);
 
     useEffect(() => {
-
         const obtenerProductos = async () => {
             const options = {method: 'GET', url: 'http://localhost:5000/productos'};
              axios
@@ -24,18 +22,18 @@ const Productos = () => {
                 console.error(error);
               });
         };
-    
-        if (refrescar){
+        if(recargar){
             obtenerProductos();
-            setRefrescar(false);
+            setRecargar(false);
         }
-    }, [refrescar])
+
+    }, [recargar])
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
 
         if (mostrarTabla) {
-            setRefrescar(true);
+            setRecargar(true);
             
         }
     }, [mostrarTabla]);
@@ -58,7 +56,7 @@ const Productos = () => {
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
             {mostrarTabla ? (
-                <TablaProdructos listaProductos={productos} setRefrescar={setRefrescar}/>
+                <TablaProdructos listaProductos={productos} setRecargar={setRecargar}/>
             ) : (
                 <FormularioCreaciónProductos 
                 mostarTablaAlGuardar ={setmostrarTabla}
@@ -72,7 +70,7 @@ const Productos = () => {
     );
 };
 
-const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
+const TablaProdructos = ( { listaProductos, setRecargar } ) => {
     const [Busqueda, setBusqueda] = useState ('');
 
     useEffect(() => {
@@ -104,7 +102,7 @@ const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
             </thead>
             <tbody>
              {listaProductos.map((producto)=>{
-                return( <FilaProducto key={nanoid()} producto={producto} setRefrescar={setRefrescar}/>
+                return( <FilaProducto key={nanoid()} producto={producto} setRecargar={setRecargar} />
                 );
                 })}
             </tbody>
@@ -114,7 +112,7 @@ const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
     );
 };
 
-const FilaProducto = ({producto, setRefrescar}) => {
+const FilaProducto = ({ producto, setRecargar }) => {
 
     const [editar, setEditar] = useState(false);
     const [infoNuevo, setInfonuevo] = useState({
@@ -138,7 +136,7 @@ const FilaProducto = ({producto, setRefrescar}) => {
             console.log(response.data);
             toast.success('Producto editado con éxito!')
             setEditar(false);
-            setRefrescar(true)
+            setRecargar(true);
           }).catch(function (error) {
             console.error(error);
             toast.error('No fue posible editar el registro')
@@ -157,7 +155,7 @@ const FilaProducto = ({producto, setRefrescar}) => {
           await axios.request(options).then(function (response) {
             console.log(response.data);
             toast.success("Producto Eliminado con éxito!")
-            setRefrescar(true);
+            setRecargar(true);
           }).catch(function (error) {
             console.error(error);
             toast.error("¡No fue posible eliminar el producto!")
