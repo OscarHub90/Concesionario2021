@@ -48,11 +48,11 @@ const Productos = () => {
 
     
     return (
-        <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
+        <div className=" items-center h-full w-full m-10 p-20 flex flex-col">
             <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
             <div className="w-full">
 
-            <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
+            <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-2 text-lg text-white" 
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
             {mostrarTabla ? (
@@ -71,23 +71,33 @@ const Productos = () => {
 };
 
 const TablaProdructos = ( { listaProductos, setRecargar } ) => {
+    
     const [Busqueda, setBusqueda] = useState ('');
+    const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
 
     useEffect(() => {
         console.log("Búsqueda", Busqueda)
-    }, [Busqueda]);
+        console.log("lista original", listaProductos);
+        setProductosFiltrados(
+            listaProductos.filter((elemento) => {
+            console.log('elemento',elemento);
+            return JSON.stringify(elemento).toLowerCase().includes(Busqueda.toLowerCase());
+        })
+        )
+    }, [Busqueda, listaProductos]);
 
     useEffect(() => {
         console.log("Este es el listado de productos", listaProductos);
     }, [listaProductos]);
 
     return (
-    <div>
-        <input className="flex w-full"
+    <div className="flex flex-col justify-items-center">
+        <input className="flex flex-col W-20 m-4"
         value={Busqueda}
-        placeholder="Buscar" className="border border-gray-700 rounded-xl py-2"/>
+        onChange={e=> setBusqueda(e.target.value)}
+        placeholder="Buscar" className=" p-2 rounded-xl border-2 border-gray-300"/>
         
-    <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
+    <h2 className="text-gray-900 font-bold text-2xl w-full m-4 items-center">Tabla de Productos</h2>
 
         <table className="table w-full">
             <thead>
@@ -101,7 +111,7 @@ const TablaProdructos = ( { listaProductos, setRecargar } ) => {
                 </tr>
             </thead>
             <tbody>
-             {listaProductos.map((producto)=>{
+             {productosFiltrados.map((producto)=>{
                 return( <FilaProducto key={nanoid()} producto={producto} setRecargar={setRecargar} />
                 );
                 })}
