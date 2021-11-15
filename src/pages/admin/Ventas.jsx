@@ -266,7 +266,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
             })
             .catch(function (error) {
               console.error(error);
-              toast.error('¡Error creando el registro!');
+              toast.error('¡Error creando el registro de venta!');
             });
         mostarTablaAlGuardar(true);
     };
