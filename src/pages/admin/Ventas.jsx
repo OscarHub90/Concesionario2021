@@ -245,17 +245,17 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
         e.preventDefault();
         const fd = new FormData(form.current);
         
-        const nuevoUsuario = {};
+        const nuevaVenta = {};
         fd.forEach((value, key)=> {
             console.log(value, key)
-            nuevoUsuario[key] = value;
+            nuevaVenta[key] = value;
         });
         
         const options = {
             method: 'POST',
-            url: 'http://localhost:5000/venta/nueva',
+            url: 'http://localhost:5000/ventas/nueva',
             headers: { 'Content-Type': 'application/json' },
-            data: {vendedor: nuevoUsuario.vendedor, producto: nuevoUsuario.producto, cantidad: nuevoUsuario.cantidad, precio: nuevoUsuario.precio}
+            data: {vendedor: nuevaVenta.vendedor, producto: nuevaVenta.producto, cantidad: nuevaVenta.cantidad, precio: nuevaVenta.precio}
         };
       
           await axios
@@ -278,7 +278,7 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                 <label htmlFor="vendedor"> Nombre Vendedor
                     <input 
                     name="vendedor"
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text"
                     />
                 </label>
                 <label htmlFor="producto"> Nombre producto
@@ -289,23 +289,16 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
                     />
                 </label>
                 <label htmlFor="cantidad"> Cantidad
-                <select
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="cantidad" required
-                    defaultValue={0}>
-                    <option disabled value={0}>Seleccione una opción</option>
-                        <option >Vendedor</option>
-                        <option >Administrador</option>
-                    </select>
+                    <input 
+                    name="cantidad"
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
+                    />
                 </label>
-                <label htmlFor='precio'>
-                    Precio
-                    <select
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="precio" required
-                    defaultValue={0}>
-                    <option disabled value={0}>Seleccione una opción</option>
-                        <option >Activo</option>
-                        <option >Inactivo</option>
-                    </select>
+                <label htmlFor="precio"> Precio
+                    <input 
+                    name="precio"
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="$"
+                    />
                 </label>
 
                 <button type='submit' className="rounded-full  bg-green-500 hover:bg-green-700 p-3 m-3 text-lg text-white " >

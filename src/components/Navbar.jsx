@@ -4,16 +4,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Navbar = () => {
     const { loginWithRedirect } = useAuth0();
     return (
-        <nav className="bg-red-300">
+        <nav className="bg-green-900">
             <ul className="flex h-full justify-between my-4 "> 
-                <li>Logo</li>
-                <li>Logo</li>
-                <li>Navegación 1</li>
-                <li>Navegación 2</li>
-                <li>navegación 3</li>
-                <li className= "px-4">
+                <li></li>
+               
+                <li className= "flex - flex-col p-3 px-4">
                     <button 
-                    onClick={() => loginWithRedirect()}className=" bg-indigo-100 px-2 rounded-lg hover:bg-indigo-300">Iniciar Sesión</button>
+                    onClick={() => loginWithRedirect({ returnTo: "http://localhost:3000/admin" })}className=" bg-indigo-100 w-60 p-2 rounded-lg hover:bg-indigo-300">Iniciar Sesión</button>
                 </li>
             </ul>
         </nav>

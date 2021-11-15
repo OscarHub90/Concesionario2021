@@ -18,7 +18,7 @@ function App() {
       <Auth0Provider
       domain="misiontic-concesionario2.us.auth0.com"
       clientId="hhcz7kYvqDx0oIaBJisfB9cZ3lsZi9kd"
-      redirectUri={window.location.origin}
+      redirectUri="http://localhost:3000/admin"
       >
         <div className="App">
     <DarkModeContext.Provider >
