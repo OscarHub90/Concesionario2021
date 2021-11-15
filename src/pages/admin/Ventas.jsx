@@ -4,19 +4,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-const Usuarios = () => {
+const Ventas = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Usuario");
-    const [productos, setproductos] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
+    const [productos, setventas] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
     const [recargar, setRecargar] = useState(true);
 
     useEffect(() => {
         const obtenerUsuarios = async () => {
-            const options = {method: 'GET', url: 'http://localhost:5000/usuarios'};
+            const options = {method: 'GET', url: 'http://localhost:5000/ventas'};
              await axios
               .request(options)
               .then(function (response) {
-                setproductos(response.data);
+                setventas(response.data);
               })
               .catch(function (error) {
                 console.error(error);
@@ -40,16 +40,16 @@ const Usuarios = () => {
 
     useEffect (() => {
      if (mostrarTabla) {
-        setnombreBoton("Crear Nuevo Usuario");
+        setnombreBoton("Nueva Venta");
     } else {
-        setnombreBoton("Mostrar Todos los Usuarios");
+        setnombreBoton("Volver al listado de ventas");
     }
     },[mostrarTabla]); 
 
     
     return (
         <div className=" items-center h-full w-full m-10 p-20 flex flex-col">
-            <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE USUARIOS</h2>
+            <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN VENTAS</h2>
             <div className="w-full">
 
             <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-2 text-lg text-white" 
@@ -61,7 +61,7 @@ const Usuarios = () => {
                 <FormularioCreaciónProductos 
                 mostarTablaAlGuardar ={setmostrarTabla}
                 listaProductos={productos}
-                registrarNuevo = {setproductos}
+                registrarNuevo = {setventas}
                 />
             )}
             <ToastContainer position="bottom-center" autoClose={5000}/>
@@ -73,12 +73,12 @@ const Usuarios = () => {
 const TablaProdructos = ( { listaProductos, setRecargar } ) => {
     
     const [Busqueda, setBusqueda] = useState ('');
-    const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
+    const [productosFiltrados, setventasFiltrados] = useState(listaProductos);
 
     useEffect(() => {
         console.log("Búsqueda", Busqueda)
         console.log("lista original", listaProductos);
-        setProductosFiltrados(
+        setventasFiltrados(
             listaProductos.filter((elemento) => {
             console.log('elemento',elemento);
             return JSON.stringify(elemento).toLowerCase().includes(Busqueda.toLowerCase());
@@ -102,11 +102,11 @@ const TablaProdructos = ( { listaProductos, setRecargar } ) => {
         <table className="table w-full">
             <thead>
                 <tr>
-                    <th>Cédula</th>
+                    <th>Vendedor</th>
                     {/*<th>Referencia</th>*/}
-                    <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
                     <th>Editar</th>
                     <th >Eliminar</th>
                 </tr>
@@ -129,16 +129,16 @@ const FilaProducto = ({ producto, setRecargar }) => {
     const [infoNuevo, setInfonuevo] = useState({
 
         /* _id:producto._id, */
-        cedula:producto.cedula,
-        nombre:producto.nombre,
-        rol:producto.rol,
-        estado:producto.estado,
+        vendedor:producto.vendedor,
+        producto:producto.producto,
+        cantidad:producto.cantidad,
+        precio:producto.precio,
     })
     const actualizarProducto = async () => {
         console.log(infoNuevo);
         const options = {
             method: 'PATCH',
-            url: 'http://localhost:5000/usuarios/editar/',
+            url: 'http://localhost:5000/ventas/editar/',
             headers: {'Content-Type': 'application/json'},
             data: {...infoNuevo, id: producto._id},
           };
@@ -147,7 +147,7 @@ const FilaProducto = ({ producto, setRecargar }) => {
           .request(options)
           .then(function (response) {
             console.log(response.data);
-            toast.success('usuario editado con éxito!')
+            toast.success('Venta actualizada con éxito!')
             setEditar(false);
             setRecargar(true);
           }).catch(function (error) {
@@ -160,18 +160,18 @@ const FilaProducto = ({ producto, setRecargar }) => {
     const eliminarProducto = async()=> {
         const options = {
             method: 'DELETE',
-            url: 'http://localhost:5000/usuarios/eliminar',
+            url: 'http://localhost:5000/ventas/eliminar',
             headers: {'Content-Type': 'application/json'},
             data: {id: producto._id},
           };
           
           await axios.request(options).then(function (response) {
             console.log(response.data);
-            toast.success("Usuario Eliminado con éxito!")
+            toast.success("Registro de venta Eliminado con éxito!")
             setRecargar(true);
           }).catch(function (error) {
             console.error(error);
-            toast.error("¡No fue posible eliminar el usuario!")
+            toast.error("¡No fue posible eliminar el registro!")
           });  
     }
     return (
@@ -183,35 +183,35 @@ const FilaProducto = ({ producto, setRecargar }) => {
                         className="border-gray-700 bg-blue-100 p-2 rounded-xl"
                             type="text" 
                         Value={infoNuevo.id}
-                          onChange={e=>setInfonuevo({...infoNuevo, cedula: e.target.value})}
+                          onChange={e=>setInfonuevo({...infoNuevo, vendedor: e.target.value})}
                         />
                         </td>
                         <td><input 
                         className="border-gray-700 bg-blue-100 p-2 rounded-xl"
                         type="text" 
                         Value={infoNuevo.nombre}
-                        onChange={e=>setInfonuevo({...infoNuevo, nombre: e.target.value})}
+                        onChange={e=>setInfonuevo({...infoNuevo, producto: e.target.value})}
                         /></td>
                         <td><input 
                         className="border-gray-700 bg-blue-100 p-2 rounded-xl"
                         type="text" 
                         Value={infoNuevo.valor}
-                        onChange={e=>setInfonuevo({...infoNuevo, rol: e.target.value})}
+                        onChange={e=>setInfonuevo({...infoNuevo, cantidad: e.target.value})}
                         /></td>
                         <td><input 
                         className="border-gray-700 bg-blue-100 p-2 rounded-xl"
                         type="text" 
                         Value={infoNuevo.estado}
-                        onChange={e=>setInfonuevo({...infoNuevo, estado: e.target.value})}
+                        onChange={e=>setInfonuevo({...infoNuevo, precio: e.target.value})}
                         /></td>
 
                          </>
                          ):(
                          <>
-                         <td>{producto.cedula}</td>
-                         <td>{producto.nombre}</td>
-                         <td>{producto.rol}</td>
-                         <td>{producto.estado}</td>
+                         <td>{producto.vendedor}</td>
+                         <td>{producto.producto}</td>
+                         <td>{producto.cantidad}</td>
+                         <td>{producto.precio}</td>
                          </>
                          )}
                        <td className="justify-items-around">
@@ -253,55 +253,54 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
         
         const options = {
             method: 'POST',
-            url: 'http://localhost:5000/usuarios/nuevo',
+            url: 'http://localhost:5000/venta/nueva',
             headers: { 'Content-Type': 'application/json' },
-            data: {cedula: nuevoUsuario.cedula, nombre: nuevoUsuario.nombre, rol: nuevoUsuario.rol, estado: nuevoUsuario.estado}
+            data: {vendedor: nuevoUsuario.vendedor, producto: nuevoUsuario.producto, cantidad: nuevoUsuario.cantidad, precio: nuevoUsuario.precio}
         };
       
           await axios
             .request(options)
             .then(function (response) {
               console.log(response.data);
-              toast.success('¡Usuario agregado con éxito!');
-
+              toast.success('!venta agregada con éxito!');
             })
             .catch(function (error) {
               console.error(error);
-              toast.error('¡Error creando el producto!');
+              toast.error('¡Error creando el registro!');
             });
         mostarTablaAlGuardar(true);
     };
 
     
     return (<div className="flex flex-col justify-center">
-            <h2 className="text-gray-900 font-extrabold m-8">Formulario para creación usuarios nuevos</h2>
+            <h2 className="text-gray-900 font-extrabold m-8">Formulario para el resgistro de Ventas</h2>
             <form ref={form} onSubmit={submitForm} className= " flex flex-auto grid-cols-1">
-                <label htmlFor="cedula"> Cédula
+                <label htmlFor="vendedor"> Nombre Vendedor
                     <input 
-                    name="cedula"
+                    name="vendedor"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text" placeholder="123456"
                     />
                 </label>
-                <label htmlFor="nombre"> Nombre
+                <label htmlFor="producto"> Nombre producto
                     <input 
-                    name="nombre"
+                    name="producto"
                     className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" type="text"
 
                     />
                 </label>
-                <label htmlFor="rol"> Rol
+                <label htmlFor="cantidad"> Cantidad
                 <select
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="rol" required
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="cantidad" required
                     defaultValue={0}>
                     <option disabled value={0}>Seleccione una opción</option>
                         <option >Vendedor</option>
                         <option >Administrador</option>
                     </select>
                 </label>
-                <label htmlFor='estado'>
-                    Estado
+                <label htmlFor='precio'>
+                    Precio
                     <select
-                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="estado" required
+                    className="border-gray-700 bg-blue-100 m-2 p-2 rounded-xl" name="precio" required
                     defaultValue={0}>
                     <option disabled value={0}>Seleccione una opción</option>
                         <option >Activo</option>
@@ -315,5 +314,4 @@ const FormularioCreaciónProductos = ({mostarTablaAlGuardar, listaProductos , re
           </div>
     )
 };
-
-export default Usuarios
+export default Ventas

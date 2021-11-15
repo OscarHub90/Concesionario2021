@@ -4,18 +4,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-
 const Productos = () => {
     const [mostrarTabla, setmostrarTabla] = useState(true);
     const [nombreBoton, setnombreBoton] = useState ("Crear Nuevo Producto");
     const [productos, setproductos] = useState([]); // Se deja el [] vacío porque le van a llegar datos desde el Back
-    const [refrescar, setRefrescar] = useState(true)
+    const [recargar, setRecargar] = useState(true);
 
     useEffect(() => {
-
         const obtenerProductos = async () => {
             const options = {method: 'GET', url: 'http://localhost:5000/productos'};
-             axios
+             await axios
               .request(options)
               .then(function (response) {
                 setproductos(response.data);
@@ -24,18 +22,18 @@ const Productos = () => {
                 console.error(error);
               });
         };
-    
-        if (refrescar){
+        if(recargar){
             obtenerProductos();
-            setRefrescar(false);
+            setRecargar(false);
         }
-    }, [refrescar])
+
+    }, [recargar])
 
     useEffect (() => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
 
         if (mostrarTabla) {
-            setRefrescar(true);
+            setRecargar(false);
             
         }
     }, [mostrarTabla]);
@@ -50,15 +48,15 @@ const Productos = () => {
 
     
     return (
-        <div className=" items-center h-full w-full m-20 p-20 flex flex-col">
+        <div className=" items-center h-full w-full m-10 p-20 flex flex-col">
             <h2 className=" text-4xl text-green-700 m-5">ADMINISTRACIÓN DE PRODUCTOS</h2>
             <div className="w-full">
 
-            <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-3 text-lg text-white" 
+            <button className="rounded-lg  bg-indigo-800 hover:bg-green-600 p-3 m-2 text-lg text-white" 
             onClick = {() => {setmostrarTabla(!mostrarTabla)}} > {nombreBoton} </button>
            
             {mostrarTabla ? (
-                <TablaProdructos listaProductos={productos} setRefrescar={setRefrescar}/>
+                <TablaProdructos listaProductos={productos} setRecargar={setRecargar}/>
             ) : (
                 <FormularioCreaciónProductos 
                 mostarTablaAlGuardar ={setmostrarTabla}
@@ -72,29 +70,40 @@ const Productos = () => {
     );
 };
 
-const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
+const TablaProdructos = ( { listaProductos, setRecargar } ) => {
+    
     const [Busqueda, setBusqueda] = useState ('');
+    const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
 
     useEffect(() => {
         console.log("Búsqueda", Busqueda)
-    }, [Busqueda]);
+        console.log("lista original", listaProductos);
+        setProductosFiltrados(
+            listaProductos.filter((elemento) => {
+            console.log('elemento',elemento);
+            return JSON.stringify(elemento).toLowerCase().includes(Busqueda.toLowerCase());
+        })
+        )
+    }, [Busqueda, listaProductos]);
 
     useEffect(() => {
         console.log("Este es el listado de productos", listaProductos);
     }, [listaProductos]);
 
     return (
-    <div>
-        <input className="flex w-full"
+    <div className="flex flex-col justify-items-center">
+        <input className="flex flex-col W-20 m-4"
         value={Busqueda}
-        placeholder="Buscar" className="border border-gray-700 rounded-xl py-2"/>
+        onChange={e=> setBusqueda(e.target.value)}
+        placeholder="Busqueda" className=" p-2 rounded-xl border-2 border-gray-300"/>
         
-    <h2 className="text-gray-900 font-bold text-2xl w-full">Tabla de Productos</h2>
+    <h2 className="text-gray-900 font-bold text-2xl w-full m-4 items-center">Tabla de Productos</h2>
 
         <table className="table w-full">
             <thead>
                 <tr>
-                    <th>Referencia</th>
+                    <th>Id</th>
+                    {/*<th>Referencia</th>*/}
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
@@ -103,8 +112,8 @@ const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
                 </tr>
             </thead>
             <tbody>
-             {listaProductos.map((producto)=>{
-                return( <FilaProducto key={nanoid()} producto={producto} setRefrescar={setRefrescar}/>
+             {productosFiltrados.map((producto)=>{
+                return( <FilaProducto key={nanoid()} producto={producto} setRecargar={setRecargar} />
                 );
                 })}
             </tbody>
@@ -114,11 +123,12 @@ const TablaProdructos = ( { listaProductos, setRefrescar } ) => {
     );
 };
 
-const FilaProducto = ({producto, setRefrescar}) => {
+const FilaProducto = ({ producto, setRecargar }) => {
 
     const [editar, setEditar] = useState(false);
     const [infoNuevo, setInfonuevo] = useState({
 
+        /* _id:producto._id, */
         codigo:producto.codigo,
         nombre:producto.nombre,
         valor:producto.valor,
@@ -138,7 +148,7 @@ const FilaProducto = ({producto, setRefrescar}) => {
             console.log(response.data);
             toast.success('Producto editado con éxito!')
             setEditar(false);
-            setRefrescar(true)
+            setRecargar(true);
           }).catch(function (error) {
             console.error(error);
             toast.error('No fue posible editar el registro')
@@ -157,7 +167,7 @@ const FilaProducto = ({producto, setRefrescar}) => {
           await axios.request(options).then(function (response) {
             console.log(response.data);
             toast.success("Producto Eliminado con éxito!")
-            setRefrescar(true);
+            setRecargar(true);
           }).catch(function (error) {
             console.error(error);
             toast.error("¡No fue posible eliminar el producto!")
@@ -165,6 +175,7 @@ const FilaProducto = ({producto, setRefrescar}) => {
     }
     return (
                     <tr>
+                        {/* <td>{infoNuevo._id.slice(19)}</td> */}
                         {editar? (
                         <>
                         <td><input 
