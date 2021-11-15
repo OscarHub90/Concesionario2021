@@ -13,7 +13,7 @@ const Productos = () => {
     useEffect(() => {
         const obtenerProductos = async () => {
             const options = {method: 'GET', url: 'http://localhost:5000/productos'};
-             axios
+             await axios
               .request(options)
               .then(function (response) {
                 setproductos(response.data);
@@ -33,7 +33,7 @@ const Productos = () => {
         // obtenemos las lista de los productos desde el backend. en este caso los datos que se encuentran en el objeto "productos"
 
         if (mostrarTabla) {
-            setRecargar(true);
+            setRecargar(false);
             
         }
     }, [mostrarTabla]);
@@ -95,14 +95,15 @@ const TablaProdructos = ( { listaProductos, setRecargar } ) => {
         <input className="flex flex-col W-20 m-4"
         value={Busqueda}
         onChange={e=> setBusqueda(e.target.value)}
-        placeholder="Buscar" className=" p-2 rounded-xl border-2 border-gray-300"/>
+        placeholder="Busqueda" className=" p-2 rounded-xl border-2 border-gray-300"/>
         
     <h2 className="text-gray-900 font-bold text-2xl w-full m-4 items-center">Tabla de Productos</h2>
 
         <table className="table w-full">
             <thead>
                 <tr>
-                    <th>Referencia</th>
+                    <th>Id</th>
+                    {/*<th>Referencia</th>*/}
                     <th>Descripción</th>
                     <th>Valor</th>
                     <th>Estado</th>
@@ -127,6 +128,7 @@ const FilaProducto = ({ producto, setRecargar }) => {
     const [editar, setEditar] = useState(false);
     const [infoNuevo, setInfonuevo] = useState({
 
+        /* _id:producto._id, */
         codigo:producto.codigo,
         nombre:producto.nombre,
         valor:producto.valor,
@@ -173,6 +175,7 @@ const FilaProducto = ({ producto, setRecargar }) => {
     }
     return (
                     <tr>
+                        {/* <td>{infoNuevo._id.slice(19)}</td> */}
                         {editar? (
                         <>
                         <td><input 
