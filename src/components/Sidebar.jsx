@@ -4,19 +4,18 @@ import Logo from 'media/LogoClav.png'
 
 const Sidebar = () => {
     return (
-        <nav className='w-72 border border-gray-300 h-full flex flex-col p-4 sidebar'>
+        <nav className='w-72 border bg-green-800 border-gray-800 border-xl h-full flex flex-col p-4 sidebar'>
         <div className="justify-start">
             <Link to="/admin">
               <img src={Logo} alt="Logo" className="h-full w-full" />
             </Link>
         </div>
       <div className='my-4'>
-        <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' />
         <Ruta icono='fas fa-tshirt' ruta='/admin/productos' nombre='Productos' />
         <Ruta icono='fas fa-wallet' ruta='/admin/ventas' nombre='Ventas' />
         <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
       </div>
-      <button>Cerrar Sesión</button>
+      <button className= "rounded-lg  bg-green-600 hover:bg-red-600 p-1 m-2 text-lg text-white" > Cerrar Sesión</button>
 
     </nav>
   );
